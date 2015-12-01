@@ -1,6 +1,5 @@
 # coffo
 coffo
-Build Status
 
 redis压力测试工具
 
@@ -16,6 +15,7 @@ Usage
 Usage: coffo [options...] ipaddr:port
 
 Options:
+
   -n  Number of requests to run.
   
   -c  Number of requests to run concurrently. Total number of requests cannot
@@ -27,4 +27,5 @@ Options:
 
   -cpus                 Number of used cpu cores.
                         (default for current machine is 1 cores)
+                        
   -auth auth passwd, if empty , no auth
