@@ -1,0 +1,2 @@
+[ $# -ne 3 ]&& echo eg: ops bingfa req_num cpu &&exit 127 || echo begin running
+./coffo -n $2 -c $1 -cpus $3 10.3.15.69:19000

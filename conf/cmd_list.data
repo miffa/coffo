@@ -1,0 +1,5 @@
+string:set,get,mget,del
+list:lpush,lpop,rpop,lrange,ltrim,lrem,del
+hash:hset,hget,hdel,hgetall,del
+set:sadd,sismember,sinter,scard,srem,del
+sortedset:zadd,zrevrange,zrange,zcount,zremrangebyrank,zscore,del

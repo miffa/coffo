@@ -1,0 +1,2 @@
+rm -rf testdata/*
+ ./tools -c $1 -n $2 -cpus 2
