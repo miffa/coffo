@@ -12,8 +12,8 @@ import (
 )
 
 const (
-	STRING_KEY_LEN = 32
-	STRING_VAL_LEN = 32 //actual   len is STRING_VAL_LEN + STRING_KEY_LEN
+	STRING_KEY_LEN = 128
+	STRING_VAL_LEN = 1024 //actual   len is STRING_VAL_LEN + STRING_KEY_LEN
 )
 
 var (
@@ -72,7 +72,7 @@ func Init(testdata int, num int) bool {
 	wg := new(sync.WaitGroup)
 	for i := 0; i < num; i++ {
 		wg.Add(1)
-		filename := fmt.Sprintf("testdata/qdb_data_%d.log", i)
+		filename := fmt.Sprintf("a/qdb_data_%d.log", i)
 		//go GenData2File(testdata, filename, wg)
 		GenData2File(testdata, filename, wg)
 		fmt.Printf(" datafile %s is ok \n", filename)

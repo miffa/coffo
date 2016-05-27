@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	log "code.google.com/p/log4go"
+	log "github.com/alecthomas/log4go"
 	"github.com/garyburd/redigo/redis"
 )
 
@@ -88,12 +88,6 @@ func (self *CmdRunner) Run() bool {
 		reporter.Resultdata.SetBeginTime(time.Now().UnixNano())
 
 		wg := new(sync.WaitGroup)
-		/*
-			type CheckBeginer struct {
-				datastruct string
-				cmd        string
-			}
-		*/
 		startcheck := &reporter.CheckBeginer{Datastruct: self.data_struct, Cmd: cmd}
 
 		reporter.Datasummer.AddChecker(startcheck)

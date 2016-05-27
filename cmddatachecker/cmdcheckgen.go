@@ -19,7 +19,10 @@ const (
 
 var Cmd_map = map[string][]string{
 	//"string":    {"set", "get", "mget", "mget32", "mget64", "del"},
-	"string":    {"set", "get", "get", "get", "get"}, //, "del"},
+	"ssdstring": {"ssdput", "ssdget", "ssdscan", "ssddel"},
+	//"string":    {"set", "get"},//, "set", "get" }, //, "del"},
+	//"string":    { "set"},//, "set", "get" }, //, "del"},
+	"string":    {"get" },//, "set", "get" }, //, "del"},
 	"list":      {"lpush", "lrange", "lpop", "rpop", "ltrim", "del"},
 	"hash":      {"hset", "hlen", "hget", "hexists", "hmget", "hkeys", "hgetall", "hdel", "del"},
 	"set":       {"sadd", "sismember", "smembers", "sinter", "scard", "spop", "srem", "del"},
@@ -38,6 +41,9 @@ func NewDataChecker(cmd string, client *redis.Pool, id int) CMDDataChecker {
 	case "string":
 		//log.Info("string job")
 		return &StringGenerator{Client: client, id: id}
+	case "ssdstring":
+		//log.Info("string job")
+		return &SSDStringGenerator{Client: client, id: id}
 	case "sortedset":
 		//log.Info("sortedset job")
 		return &SortedSetGenerator{Client: client, id: id}

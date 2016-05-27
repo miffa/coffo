@@ -4,7 +4,7 @@ import (
 	//"bytes"
 	"time"
 
-	log "code.google.com/p/log4go"
+	log "github.com/alecthomas/log4go"
 )
 
 type DayDataItem struct {

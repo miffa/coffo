@@ -1,4 +1,4 @@
-all: clean coboo
+all: clean coffo
 
 coffo:
 	go get

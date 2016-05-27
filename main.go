@@ -2,6 +2,7 @@ package main
 
 import (
 	"coffo/cmdrunner"
+        "coffo/cmddatachecker"
 	"flag"
 	"fmt"
 	"net"
@@ -13,7 +14,7 @@ import (
 
 	"coffo/reporter"
 
-	log "code.google.com/p/log4go"
+	log "github.com/alecthomas/log4go"
 )
 
 var usage = `Usage: myexe [options...]  ipaddress
@@ -40,6 +41,7 @@ var (
 	//disableKeepAlives  = flag.Bool("disable-keepalive", false, "")
 	data_type   = flag.String("type", "string", "")
 	auth_passwd = flag.String("auth", "", "")
+	filepath = flag.String("datapath", "tools/testdata", "")
 )
 
 func main() {
@@ -52,6 +54,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, " args num is %d\n", flag.NArg())
 		usageAndExit("need ipaddress like this 23.45.66.78:80")
 	}
+
 	codisAddr := flag.Args()[0]
 	if codisAddr == "" {
 		usageAndExit("empty  ipaddress ")
@@ -72,6 +75,8 @@ func main() {
 	reporter.Dayreport.Run()
 
 	Runpprof()
+        cmddatachecker.Filepath = *filepath
+        fmt.Printf("data pth %s", cmddatachecker.Filepath)
 
 	//c int32, req int32, ipandport string, port int16, sec int32, datatype string
 	loadrunner := cmdrunner.NewCmdRunner(uint32(*c), int32(*n), codisAddr, 60, *data_type, *t, *auth_passwd)

@@ -11,10 +11,12 @@ import (
 	"sync"
 	"time"
 
-	log "code.google.com/p/log4go"
+	log "github.com/alecthomas/log4go"
 	"github.com/garyburd/redigo/redis"
 )
 
+
+var Filepath string 
 /////////////////////////////////////////////////////////
 //           string
 /////////////////////////////////////////////////////////
@@ -22,8 +24,8 @@ const (
 	MGET_GROUP_avg = 20
 	MGET_GROUP_32  = 32
 	MGET_GROUP_64  = 64
-	STRING_KEY_LEN = 32
-	STRING_VAL_LEN = 32
+	STRING_KEY_LEN = 128
+	STRING_VAL_LEN = 1024
 )
 
 type StringData struct {
@@ -51,6 +53,7 @@ func (self *StringGenerator) GenData2File(testdata int, filename string) bool {
 	outputreader := bufio.NewReader(outputFile)
 
 	self.data_list = make([]*StringData, 0)
+        mynum := 0
 	for {
 		dataline, inputerr := outputreader.ReadString('\n')
 		if inputerr == io.EOF {
@@ -62,16 +65,21 @@ func (self *StringGenerator) GenData2File(testdata int, filename string) bool {
 		}
 		data := &StringData{datas[0], datas[1]}
 		self.data_list = append(self.data_list, data)
+                mynum ++
+                if mynum > testdata +2 {
+                    break   
+                }
 		//fmt.Printf("key:%s, value:%s\n", datas[0], datas[1])
 	}
 	return true
 }
 
 func (self *StringGenerator) SInit(testdata int) bool {
-	filename := fmt.Sprintf("tools/testdata/qdb_data_%d.log", self.id)
-	//go GenData2File(testdata, filename, wg)
-	self.GenData2File(testdata, filename)
-	log.Info(" datafile %s is ok \n", filename)
+	filenam := fmt.Sprintf("%s/qdb_data_%d.log", Filepath, self.id)
+	//go GenData2File(testdata, filenam, wg)
+	self.GenData2File(testdata, filenam)
+	log.Info(" datafile %s is ok \n", filenam)
+	fmt.Printf(" datafile %s is ok", filenam)
 	return true
 }
 
@@ -179,19 +187,21 @@ func (self *StringGenerator) checkGet(conn redis.Conn, reqnum int32, mytime *tim
 		default:
 			values := self.data_list[i%length]
 			reporter.Resultdata.AddSendQuantity()
-			reply, err := redis.String(conn.Do("get", values.key))
+			//reply, err := redis.String(conn.Do("get", values.key))
+			_, err := conn.Do("get", values.key)
 			//log.Info("redis operating:  get  %s", values.key)
 			if err != nil {
 				//log.Error("redis %s   failed: %v, %v", cmd, values, err)
 				reporter.Resultdata.AddFailQuantity()
 
 			} else {
-				if values.value == reply {
+				/*if values.value == reply {
 					reporter.Resultdata.AddSuccQuantity()
 				} else {
 					reporter.Resultdata.AddErrorQuantity()
 					//log.Error("redis  set  failed: %v", values)
-				}
+				}*/
+				reporter.Resultdata.AddSuccQuantity()
 			}
 		}
 	}
